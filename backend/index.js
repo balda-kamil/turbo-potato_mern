@@ -3,6 +3,7 @@ import mongodb from "mongodb";
 import dotenv from "dotenv";
 import RestaurantsDAO from './dao/restaurantsDAO.js'
 import ReviewsDAO from './dao/reviewsDAO.js'
+import UsersDAO from './dao/UsersDAO.js'
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ MongoClient.connect(process.env.RESTREVIEWS_DB_URI, {
   .then(async (client) => {
     await RestaurantsDAO.injectDB(client)
     await ReviewsDAO.injectDB(client)
+    await UsersDAO.injectDB(client)
     app.listen(port, () => {
       console.log(`listening on port: ${port}`);
     });
@@ -33,3 +35,4 @@ MongoClient.connect(process.env.RESTREVIEWS_DB_URI, {
 
   // TO DO
   // implement secure user authentication
+  // refactor code from mongoDB to Mongoose
