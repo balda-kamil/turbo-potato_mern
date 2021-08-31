@@ -1,8 +1,7 @@
 import mongodb from "mongodb";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-
-const ObjectId = mongodb.ObjectId;
+import { v4 as uuidv4 } from 'uuid';
 
 let users
 
@@ -21,7 +20,6 @@ export default class UsersDAO {
   }
 
   static async addUser(_id, first_name, last_name, email, password, date) {
-
     const emailDuplication = await users.findOne({email});
     if(emailDuplication){
       throw new Error('This email is already in our database, please log in')
@@ -40,17 +38,15 @@ export default class UsersDAO {
         expiresIn: "2h",
       });
 
-      console.log(token)
-
       try {
         const reviewDoc = {
-          _id: ObjectId(),
+          _id: uuidv4(),
           first_name,
           last_name,
           email: email.toLowerCase(),
           password: encryptedPassword,
           date,
-          tokens: [token],
+          token: token,
         };
 
         return await users.insertOne(reviewDoc);
@@ -75,17 +71,53 @@ export default class UsersDAO {
   //   }
   // }
 
-  // static async deleteUser(userId) {
+  static async deleteUser(userId) {
+    try {
+      const deleteResponse = await users.deleteOne({
+        _id: userId,
+      })
 
-  //   try {
-  //     const deleteResponse = await users.deleteOne({
-  //       user_id: userId,
-  //     })
+      if(deleteResponse.deletedCount){
+        return { status: "User deleted", code: 200 }
+      } else {   
+        return { status: "The user with the given ID was not found", code: 404 }
+      }  
 
-  //     return deleteResponse
-  //   } catch (e) {
-  //     console.error(`Unable to delete user: ${e}`)
-  //     return { error: e }
-  //   }
-  // }
+    } catch (e) {
+      throw new Error("error, sth went wrong...")
+    }
+  }
+
+  static async loginUser(email, password) {
+    try {
+      if(!(email && password)){
+        return { status: "All input is required", code: 400 }
+      }
+
+      const user = await users.findOne({ email });
+
+      if (user && (await bcrypt.compare(password, user.password))) {
+        // Create token
+        const token = jwt.sign(
+          { user_id: user._id, email },
+          process.env.TOKEN_KEY,
+          {
+            expiresIn: "2h",
+          }
+        );
+  
+        // save user token
+        user.token = token;
+  
+        // user
+        return { status: "Login OK", code: 200, user }
+      }
+
+      return {status: "invalid Credentials", code: 400}
+
+    } catch (e) {
+      console.log(e)
+      throw new Error("error, sth went wrong...")
+    }
+  }
 }

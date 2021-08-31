@@ -7,5 +7,13 @@ router
   .route("/register")
   .post(UsersController.apiRegisterUser)
 
+router
+  .route('/user')
+  .delete(UsersController.apiDeleteUser)
+
+router
+  .route('/login')
+  .post(UsersController.apiLoginUser)
+
 
 export default router
