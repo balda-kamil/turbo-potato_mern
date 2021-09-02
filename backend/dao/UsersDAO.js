@@ -57,20 +57,6 @@ export default class UsersDAO {
     }
   }
 
-  // static async updateUser(reviewId, userId, text, date) {
-  //   try {
-  //     const updateResponse = await users.updateOne(
-  //       { user_id: userId, _id: ObjectId(reviewId)},
-  //       { $set: { text: text, date: date  } },
-  //     )
-
-  //     return updateResponse
-  //   } catch (e) {
-  //     console.error(`Unable to update review: ${e}`)
-  //     return { error: e }
-  //   }
-  // }
-
   static async deleteUser(userId) {
     try {
       const deleteResponse = await users.deleteOne({

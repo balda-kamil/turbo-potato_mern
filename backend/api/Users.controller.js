@@ -2,6 +2,7 @@ import UsersDAO from "../dao/UsersDAO.js"
 
 export default class UsersController {
   static async apiRegisterUser(req, res, next) {
+    console.log("")
     try {
       const _id = req.body.user_id
       const first_name = req.body.first_name
@@ -56,20 +57,10 @@ export default class UsersController {
       } else {
         res.status(loginResponse.code).send(loginResponse.status)
       }
-      // const userDeleteResponse = await UsersDAO.deleteUser(
-      //   userId,
-      // )
-
-      // if(userDeleteResponse.code === 200){
-      //   res.status(200).json( userDeleteResponse.status )
-      // }
-
-      // if(userDeleteResponse.code === 404){
-      //   res.status(404).json( userDeleteResponse.status )
-      // }
 
     } catch (e) {
       res.status(500).json({ error: e.message })
     }
   }
+
 }
