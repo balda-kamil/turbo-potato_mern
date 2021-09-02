@@ -10,14 +10,7 @@ app.use(express.json())
 
 app.use('/api/v1/restaurants', restaurants)
 
-// Register User
-app.post("/register", users)
-
-// Login User
-app.post("/login", users);
-
-// Delete User
-app.delete("/user", users);
+app.use("/user", users)
 
 app.use("*", (req, res) => {
   res.status(404).json({ error:  '404, not found'})
