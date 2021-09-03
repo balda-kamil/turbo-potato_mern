@@ -6,6 +6,7 @@ import AddReview from "./components/add-review";
 import Restaurant from "./components/restaurant";
 import RestaurantsList from "./components/restaurants-list";
 import Login from "./components/login";
+import Register from "./components/register";
 
 function App() {
   const [user, setUser] = React.useState(null);
@@ -49,6 +50,15 @@ function App() {
                   </Link>
                 )}
               </li>
+              <li className="nav-item">
+                {user ? 
+                  null
+                 : (
+                  <Link to={"/register"} className="nav-link">
+                    Register
+                  </Link>
+                )}
+              </li>
             </div>
           </nav>
         </div>
@@ -72,6 +82,10 @@ function App() {
           <Route
             path="/login"
             render={(props) => <Login {...props} login={login} />}
+          />
+          <Route
+            path="/register"
+            render={(props) => <Register {...props} />}
           />
         </Switch>
       </div>
