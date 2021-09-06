@@ -1,32 +1,37 @@
 import React, { useState } from "react";
 import axios from 'axios'
 
-const Login = props => {
-  const initialUserState = {
-    name: "",
-    id: "",
-  };
+import { loginUser, useAuthState, useAuthDispatch } from '../Context' 
 
-  const [user, setUser] = useState(initialUserState);
+const Login = props => {
+
+  const dispatch = useAuthDispatch() //get the dispatch method from the useDispatch custom hook
+
+  const [user, setUser] = useState("");
   const [error, setError] = useState();
 
   const handleInputChange = event => {
+    setError(null)
     const { name, value } = event.target;
     setUser({ ...user, [name]: value });
   };
 
-  const login = () => {
-    axios.post('http://localhost:5000/user/login', user)
-      .then(resp => {
-        console.log("RESP",  resp)
-        if(resp.status === 200){
-          console.log(resp, 'User logged in!')
+  const handleLogin = async (e) => {
+    e.preventDefault()
+    let payload = user
+    try {
+        let response = await loginUser(dispatch, payload)
+        console.log('response from loginUser()', response)     
+
+        if( response.code !== 200){
+          throw new Error()
         }
-      })
-      .catch(err => {
-        console.error(err.response.data)
-        setError(err.response.data)
-      })
+
+        props.history.push('/') //navigate to dashboard on success
+    } catch (error) {
+      setError('Invalid credentials, please try again')
+      console.log("error during login", error)
+    }
   }
 
   return (
@@ -57,10 +62,11 @@ const Login = props => {
           />
         </div>
         <p>{error && error}</p>
-        <button onClick={login} className="btn btn-success">
+        <button onClick={handleLogin} className="btn btn-success">
           Login
         </button>
       </div>
+
     </div>
   );
 };
