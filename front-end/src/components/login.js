@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 const Login = props => {
-
   const initialUserState = {
     name: "",
     id: "",

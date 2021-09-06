@@ -7,6 +7,7 @@ import Restaurant from "./components/restaurant";
 import RestaurantsList from "./components/restaurants-list";
 import Login from "./components/login";
 import Register from "./components/register";
+import RegistartionThankYou from "./components/registration-thankyou";
 
 function App() {
   const [user, setUser] = React.useState(null);
@@ -86,6 +87,10 @@ function App() {
           <Route
             path="/register"
             render={(props) => <Register {...props} />}
+          />
+          <Route
+            path="/registration-thankyou"
+            render={(props) => <RegistartionThankYou {...props} />}
           />
         </Switch>
       </div>

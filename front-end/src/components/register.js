@@ -1,26 +1,30 @@
 import React from "react"
 import axios from 'axios'
+import { useHistory } from "react-router-dom";
+
 
 const Register = props => {
-  console.log(props)
-
   const [formData, updateFormData] = React.useState();
   const [error, setError] = React.useState(null);
+
+  const history = useHistory()
 
   const handleSubmit = e => {
     e.preventDefault()
     console.log('register function') 
 
-
     axios.post('http://localhost:5000/user/register', formData)
       .then(resp => {
+        console.log("RESP",  resp)
         if(resp.status === 200){
           console.log('User registered!')
+          history.push({pathname: "/registration-thankyou", state: {name: formData.first_name} });
         }
       })
       .catch(err => {
-        setError(err.response.data)
-        console.log(error)
+        console.error(err.response.data)
+        console.table(err)
+        console.dir(err)
       })
   }
 

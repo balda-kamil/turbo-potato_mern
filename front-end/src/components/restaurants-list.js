@@ -1,6 +1,6 @@
 import React from "react";
 import RestaurantDataService from "../services/restaurant.js";
-import { Switch, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function RestaurantsList(props) {
   const [restaurants, setRestaurants] = React.useState([]);
