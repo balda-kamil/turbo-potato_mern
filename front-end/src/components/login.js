@@ -1,56 +1,72 @@
 import React, { useState } from "react";
+import axios from 'axios'
+
+import { loginUser, useAuthState, useAuthDispatch } from '../Context' 
 
 const Login = props => {
-  const initialUserState = {
-    name: "",
-    id: "",
-  };
 
-  const [user, setUser] = useState(initialUserState);
+  const dispatch = useAuthDispatch() //get the dispatch method from the useDispatch custom hook
+
+  const [user, setUser] = useState("");
+  const [error, setError] = useState();
 
   const handleInputChange = event => {
+    setError(null)
     const { name, value } = event.target;
     setUser({ ...user, [name]: value });
   };
 
-  const login = () => {
-    props.login(user)
-    props.history.push('/');
+  const handleLogin = async (e) => {
+    e.preventDefault()
+    let payload = user
+    try {
+        let response = await loginUser(dispatch, payload)
+        console.log('response from loginUser()', response)     
+
+        if( response.code !== 200){
+          throw new Error()
+        }
+
+        props.history.push('/') //navigate to dashboard on success
+    } catch (error) {
+      setError('Invalid credentials, please try again')
+      console.log("error during login", error)
+    }
   }
 
   return (
     <div className="submit-form">
       <div>
         <div className="form-group">
-          <label htmlFor="user">Username</label>
+          <label htmlFor="email">Email</label>
           <input
             type="text"
             className="form-control"
-            id="name"
+            id="email"
             required
-            value={user.name}
+            value={user.email || ""}
             onChange={handleInputChange}
-            name="name"
+            name="email"
           />
         </div>
-
         <div className="form-group">
-          <label htmlFor="id">ID</label>
+          <label htmlFor="password">Password</label>
           <input
-            type="text"
+            type="password"
             className="form-control"
-            id="id"
+            id="password"
             required
-            value={user.id}
+            value={user.password || ""}
             onChange={handleInputChange}
-            name="id"
+            name="password"
           />
         </div>
-
-        <button onClick={login} className="btn btn-success">
+        <p>{error && error}</p>
+        <button onClick={handleLogin} className="btn btn-success">
           Login
         </button>
       </div>
+
     </div>
   );
 };
