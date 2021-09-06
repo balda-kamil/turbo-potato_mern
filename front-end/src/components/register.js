@@ -1,16 +1,27 @@
 import React from "react"
+import axios from 'axios'
 
 const Register = props => {
   console.log(props)
 
   const [formData, updateFormData] = React.useState();
+  const [error, setError] = React.useState(null);
 
   const handleSubmit = e => {
-    console.log(e)
     e.preventDefault()
-    console.log('register function')
+    console.log('register function') 
 
-    
+
+    axios.post('http://localhost:5000/user/register', formData)
+      .then(resp => {
+        if(resp.status === 200){
+          console.log('User registered!')
+        }
+      })
+      .catch(err => {
+        setError(err.response.data)
+        console.log(error)
+      })
   }
 
   const handleChange = e => {
@@ -21,6 +32,7 @@ const Register = props => {
       // Trimming any whitespace
       [e.target.name]: e.target.value.trim()
     });
+    setError(null)
   }
 
   console.log(formData)
@@ -31,11 +43,11 @@ const Register = props => {
         <form onSubmit={handleSubmit}>
           <label>
             First Name:
-            <input type="text" name="fname" onChange={handleChange}/>
+            <input type="text" name="first_name" onChange={handleChange}/>
           </label>
           <label>
             Last Name:
-            <input type="text" name="lname" onChange={handleChange}/>
+            <input type="text" name="last_name" onChange={handleChange}/>
           </label>
           <label>
             Email
@@ -48,6 +60,7 @@ const Register = props => {
           <input type="submit" value="Submit" />
         </form>
       </div>
+      { error && error.error }
     </div>
   );
 };
