@@ -11,35 +11,25 @@ const Register = props => {
 
   const handleSubmit = e => {
     e.preventDefault()
-    console.log('register function') 
-
     axios.post('http://localhost:5000/user/register', formData)
       .then(resp => {
-        console.log("RESP",  resp)
         if(resp.status === 200){
-          console.log('User registered!')
           history.push({pathname: "/registration-thankyou", state: {name: formData.first_name} });
         }
       })
       .catch(err => {
         console.error(err.response.data)
-        console.table(err)
-        console.dir(err)
       })
   }
 
   const handleChange = e => {
-    console.log(e)
     updateFormData({
       ...formData,
-
       // Trimming any whitespace
       [e.target.name]: e.target.value.trim()
     });
     setError(null)
   }
-
-  console.log(formData)
 
   return (
     <div className="submit-form">

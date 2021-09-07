@@ -2,10 +2,10 @@ import React from "react";
 import { useAuthDispatch, logout, useAuthState } from "../Context";
 
 const Dashboard = (props) => {
-  const dispatch = useAuthDispatch(); // read dispatch method from context
-  const userDetails = useAuthState(); //read user details from context
+  console.log('dashboard...')
 
-  console.log(userDetails)
+  const dispatch = useAuthDispatch(); // read dispatch method from context
+  const user =  useAuthState(); //read user details from context
 
   const handleLogout = () => {
     logout(dispatch); //call the logout action
@@ -14,7 +14,7 @@ const Dashboard = (props) => {
 
   let content;
   
-  if(userDetails.userDetails){
+  if(user.userDetails){
     content = <div>
     <h1>Welcome my friend!</h1>
       <button onClick={handleLogout}>LOG OUT</button>

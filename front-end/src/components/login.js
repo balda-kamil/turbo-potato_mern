@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import axios from 'axios'
-
-import { loginUser, useAuthState, useAuthDispatch } from '../Context' 
+import { loginUser, useAuthDispatch } from '../Context' 
+import { useHistory } from "react-router-dom";
 
 const Login = props => {
 
@@ -16,6 +15,8 @@ const Login = props => {
     setUser({ ...user, [name]: value });
   };
 
+  const history = useHistory()
+
   const handleLogin = async (e) => {
     e.preventDefault()
     let payload = user
@@ -26,8 +27,7 @@ const Login = props => {
         if( response.code !== 200){
           throw new Error()
         }
-
-        props.history.push('/') //navigate to dashboard on success
+        history.push({pathname: "/"});
     } catch (error) {
       setError('Invalid credentials, please try again')
       console.log("error during login", error)

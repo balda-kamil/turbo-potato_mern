@@ -4,90 +4,24 @@ import { AuthProvider } from "./Context";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import AddReview from "./components/add-review";
-import Restaurant from "./components/restaurant";
-import RestaurantsList from "./components/restaurants-list";
-import Login from "./components/login";
-import Register from "./components/register";
-import RegistartionThankYou from "./components/registration-thankyou";
-import Dashboard from "./components/dashboard";
-import AppRoute from './components/AppRoutes';
+import Menu from './components/menu'
 
-function App() {  
+import routes from './config/routes'
+
+function App() { 
   return (
     <AuthProvider>
       <main>
-        <div className="bg-dark">
-          <div className="container">
-            <nav className="navbar navbar-expand navbar-dark">
-              <a href="/restaurants" className="navbar-brand">
-                Restaurant Reviews
-              </a>
-              <div className="navbar-nav mr-auto">
-                <li className="nav-item">
-                  <Link to={"/restaurants"} className="nav-link">
-                    Restaurants
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <button
-                    onClick={() => console.log('LOG OUT')}
-                    className="nav-link"
-                    style={{ cursor: "pointer" }}
-                  >Logout</button>
-
-                  <Link to={"/login"} className="nav-link">
-                    Login
-                  </Link>
-                </li>
-                <li className="nav-item">
-                    <Link to={"/register"} className="nav-link">
-                      Register
-                    </Link>
-                </li>
-              </div>
-            </nav>
-          </div>
-        </div>
-
+        <Menu />
         <div className="container mt-3">
           <Switch>
-            <Route
-              exact
-              path={["/", "/restaurants"]}
-              component={RestaurantsList}
-            />
-            <Route
-              path="/restaurants/:id/review"
-              render={(props) => <AddReview {...props} />}
-            />
-            <Route
-              path="/restaurants/:id"
-              render={(props) => <Restaurant {...props} />}
-            />
-            <Route
-              path="/login"
-              render={(props) => <Login {...props}  />}
-            />
-            <Route
-              path="/register"
-              render={(props) => <Register {...props} />}
-            />
-            <Route
-              path="/registration-thankyou"
-              render={(props) => <RegistartionThankYou {...props} />}
-            />
-            <Route
-              path="/dashboard"
-              isPrivate={true}
-              render={(props) => <Dashboard {...props} />}
-            />
-            <AppRoute
-              key="dfkjsdfkjfd"
-              path={"/dashboard"}
-              component={Dashboard}
-              isPrivate={true}
-            />
+            {routes.map((route) => (
+              <Route
+                key={route.path}
+                path={route.path}
+                component={route.component}
+              />
+            ))}
           </Switch>
         </div>
       </main>

@@ -4,9 +4,10 @@ import { Redirect, Route } from "react-router-dom";
 import { useAuthState } from '../Context'
  
 const AppRoutes = ({ component: Component, path, isPrivate, ...rest }) => {
+  console.log('APP ROUTE')
     const userDetails = useAuthState()
-    console.log("APP ROUTER, USER DETAILS", userDetails)
-    return (
+    console.log(userDetails)
+        return (
         <Route
             path={path}
             render={props =>
