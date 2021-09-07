@@ -9,7 +9,7 @@ router
 
 router
   .route("/register")
-  .post(UsersController.apiRegisterUser)
+  .post(UsersController.apiRegisterUser) 
 
 router
   .route('/delete')

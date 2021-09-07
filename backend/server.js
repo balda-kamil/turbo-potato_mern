@@ -14,7 +14,6 @@ app.use('/api/v1/restaurants', restaurants)
 app.use("/user", users)
 
 app.post("/welcome", auth, (req, res) => {
-  console.log('WELCOME')
   res.status(200).send("Welcome 🙌 ");
 });
 

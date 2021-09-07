@@ -2,7 +2,6 @@ import UsersDAO from "../dao/UsersDAO.js"
 
 export default class UsersController {
   static async apiRegisterUser(req, res, next) {
-    console.log("")
     try {
       const _id = req.body.user_id
       const first_name = req.body.first_name
@@ -44,7 +43,6 @@ export default class UsersController {
   }
 
   static async apiLoginUser(req, res, next) {
-    console.log("API LOGIN USER NOW IS WORKING")
     try {
       const { email, password } = req.body;
       const loginResponse = await UsersDAO.loginUser(
@@ -53,7 +51,16 @@ export default class UsersController {
       )
 
       if(loginResponse.code === 200){
-        res.status(200).send(loginResponse.user)
+        res.status(200).send({
+          auth_token: loginResponse.user.token,
+          user: {
+            email: loginResponse.user.email,
+            _id: loginResponse.user._id,
+            first_name: loginResponse.user.first_name,
+            last_name: loginResponse.user.last_name,
+          },
+          code: 200
+        })
       } else {
         res.status(loginResponse.code).send(loginResponse.status)
       }
@@ -62,5 +69,4 @@ export default class UsersController {
       res.status(500).json({ error: e.message })
     }
   }
-
 }
