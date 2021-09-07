@@ -1,5 +1,4 @@
-import AddReview from "../components/add-review";
-import Restaurant from "../components/restaurant";
+
 import RestaurantsList from "../components/restaurants-list";
 import Login from "../components/login";
 import Register from "../components/register";
@@ -12,16 +11,7 @@ const routes = [
     path: '/restaurants',
     component: RestaurantsList,
     isPrivate: false,
-  },
-  {
-    path: '/restaurants/:id/review',
-    component: AddReview,
-    isPrivate: true,
-  },
-  {
-    path: '/restaurants/:id',
-    component: Restaurant,
-    isPrivate: false,
+    exact: true
   },
   {
     path: '/login',
@@ -46,7 +36,7 @@ const routes = [
   {
     path: '/*',
     component: NotFound,
-    isPrivate: true,
+    isPrivate: false,
   },
 ];
  

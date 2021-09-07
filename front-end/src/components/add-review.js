@@ -3,6 +3,9 @@ import RestaurantDataService from "../services/restaurant";
 import { Link } from "react-router-dom";
 
 const AddReview = props => {
+
+  console.log("PROPS", props)
+
   let initialReviewState = ""
 
   let editing = false;
@@ -22,7 +25,7 @@ const AddReview = props => {
   const saveReview = () => {
     var data = {
       text: review,
-      name: props.user.name,
+      name: props.user,
       user_id: props.user.id,
       restaurant_id: props.match.params.id
     };

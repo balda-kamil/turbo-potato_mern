@@ -72,15 +72,12 @@ function RestaurantsList(props) {
   };
 
   const findByCuisine = () => {
-    if (searchCuisine == "All Cuisines") {
+    if (searchCuisine === "All Cuisines") {
       refreshList();
     } else {
       find(searchCuisine, "cuisine");
     }
   };
-
-  //TO DO
-  //ADD PAGINATION
 
   return (
     <div>
