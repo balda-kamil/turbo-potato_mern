@@ -3,18 +3,17 @@ import { useAuthDispatch, logout, useAuthState } from "../Context";
 
 const Dashboard = (props) => {
   const dispatch = useAuthDispatch(); // read dispatch method from context
-  const userDetails = useAuthState(); //read user details from context
-
-  console.log(userDetails)
+  const userDetails =  useAuthState(); //read user details from context
 
   const handleLogout = () => {
     logout(dispatch); //call the logout action
     props.history.push('/login')
   };
 
+  console.log(userDetails)
+
   let content;
-  
-  if(userDetails.userDetails){
+  if(userDetails){
     content = <div>
     <h1>Welcome my friend!</h1>
       <button onClick={handleLogout}>LOG OUT</button>
