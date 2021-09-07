@@ -20,6 +20,10 @@ export default class UsersDAO {
   }
 
   static async addUser(_id, first_name, last_name, email, password, date) {
+    if (!(first_name && last_name && email && password)) {
+      throw new Error('Fill all requiered fields')
+    } 
+
     const emailDuplication = await users.findOne({email});
     if(emailDuplication){
       throw new Error('This email is already in our database, please log in')
@@ -29,31 +33,27 @@ export default class UsersDAO {
       throw new Error('Weak password, it must contains min 8 characters, one lowercase letter, one uppercase letter and one digit')
     }
 
-    if (!(first_name && last_name && email && password)) {
-      throw new Error('Fill all requiered fields')
-    } else {
-      const encryptedPassword = await bcrypt.hash(password, 10);
+    const encryptedPassword = await bcrypt.hash(password, 10);
 
-      const token = jwt.sign({ user_id: _id, email }, process.env.TOKEN_KEY, {
-        expiresIn: "2h",
-      });
+    const token = jwt.sign({ user_id: _id, email }, process.env.TOKEN_KEY, {
+      expiresIn: "2h",
+    });
 
-      try {
-        const reviewDoc = {
-          _id: uuidv4(),
-          first_name,
-          last_name,
-          email: email.toLowerCase(),
-          password: encryptedPassword,
-          date,
-          token: token,
-        };
+    try {
+      const reviewDoc = {
+        _id: uuidv4(),
+        first_name,
+        last_name,
+        email: email.toLowerCase(),
+        password: encryptedPassword,
+        date,
+        token: token,
+      };
 
-        return await users.insertOne(reviewDoc);
-      } catch (e) {
-        console.error(`Unable to create user: ${e}`);
-        return { error: e };
-      }
+      return await users.insertOne(reviewDoc);
+    } catch (e) {
+      console.error(`Unable to create user: ${e}`);
+      return { error: e };
     }
   }
 
@@ -96,13 +96,12 @@ export default class UsersDAO {
         user.token = token;
   
         // user
-        return { status: "Login OK", code: 200, user }
+        return { status: "Login OK", code: 200, user: user }
       }
 
-      return {status: "invalid Credentials", code: 400}
+      return {status: "Invalid credentials", code: 400}
 
     } catch (e) {
-      console.log(e)
       throw new Error("error, sth went wrong...")
     }
   }
