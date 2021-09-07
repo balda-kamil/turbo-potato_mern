@@ -3,15 +3,7 @@ import { useAuthState } from "../Context";
 import { Link } from "react-router-dom";
 
 const Menu = () => {
-
-  React.useEffect(() => {
-    console.log('Use Effect in MENU component!')
-  })
-
-  console.log('menu sie renderuje na nowo?!')
-  const user = useAuthState();
-
-  console.log(user)
+  const userDetails = useAuthState();
 
   return (
     <div className="bg-dark">
@@ -27,7 +19,7 @@ const Menu = () => {
               </Link>
             </li>
 
-            {user.userDetails ? (
+            {userDetails.token ? (
               <li className="nav-item">
                 <Link to={"/dashboard"} className="nav-link">
                   Dashboard

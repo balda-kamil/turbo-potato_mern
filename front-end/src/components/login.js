@@ -22,15 +22,13 @@ const Login = props => {
     let payload = user
     try {
         let response = await loginUser(dispatch, payload)
-        console.log('response from loginUser()', response)     
 
         if( response.code !== 200){
           throw new Error()
         }
-        history.push({pathname: "/"});
+        history.push({pathname: "/dashboard"});
     } catch (error) {
       setError('Invalid credentials, please try again')
-      console.log("error during login", error)
     }
   }
 
