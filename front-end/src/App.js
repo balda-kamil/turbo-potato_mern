@@ -12,7 +12,6 @@ import { useAuthState } from "./Context";
 function App() { 
 
    const userDetails = useAuthState()
-   const user = userDetails.user ? userDetails.user.first_name + " " + userDetails.user.last_name : false
 
   return (
     
@@ -24,13 +23,13 @@ function App() {
             key="add-review"
             path="/restaurants/:id/review"
             exact
-            render={(props) => <AddReview {...props} user={user} />}
+            render={(props) => <AddReview {...props} userDetails={userDetails} />}
           />
           <Route
             key="restaurant"
             path="/restaurants/:id"
             exact
-            render={(props) => <Restaurant {...props} user={user} />}
+            render={(props) => <Restaurant {...props} userDetails={userDetails} />}
           />
             {routes.map((route) => (
               <Route
