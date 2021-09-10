@@ -13,7 +13,7 @@ const Dashboard = (props) => {
   console.log(userDetails)
 
   let content;
-  if(userDetails){
+  if(userDetails.token){
     content = <div>
     <h1>Welcome my friend!</h1>
       <button onClick={handleLogout}>LOG OUT</button>
