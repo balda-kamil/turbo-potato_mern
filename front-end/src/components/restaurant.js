@@ -1,6 +1,8 @@
 import React from 'react'
 import RestaurantDataService from '../services/restaurant.js'
 import {Link} from 'react-router-dom'
+import ReactHtmlParser from 'react-html-parser';
+
 
 const Restaurant = props => {
 
@@ -45,14 +47,6 @@ const Restaurant = props => {
       });
   };
 
-
-
-  const stringToHTML = function(str){
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(str, 'text/html');
-    return doc.body;
-  }
-
   return (
     <div>
       {restaurant ? (
@@ -69,13 +63,12 @@ const Restaurant = props => {
           <div className="row">
             {restaurant.reviews.length > 0 ? (
              restaurant.reviews.map((review, index) => {
-
                return (
                  <div className="col-lg-4 pb-1" key={index}>
                    <div className="card">
                      <div className="card-body">
+                      {ReactHtmlParser(review.text)}<br/>
                        <p className="card-text">
-                         {stringToHTML(review.text)}<br/>
                          <strong>User: </strong>{review.name}<br/>
                          <strong>Date: </strong>{review.date}
                        </p>
