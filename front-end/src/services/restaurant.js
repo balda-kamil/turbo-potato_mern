@@ -17,11 +17,12 @@ class RestaurantDataService{
     return http.post('/review', data)
   }
 
-  updareReview(data){
+  updateReview(data){
     return http.put('/review', data)
   }
 
   deleteReview(id){
+    console.log(id)
     return http.delete(`/review?id=${id}`)
   }
 

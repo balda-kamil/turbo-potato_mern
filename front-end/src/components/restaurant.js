@@ -1,9 +1,17 @@
 import React from 'react'
 import RestaurantDataService from '../services/restaurant.js'
 import {Link} from 'react-router-dom'
+import ReactHtmlParser from 'react-html-parser';
+
+import Prism from "prismjs";
+import "../css/prism.css";
+
+
 
 const Restaurant = props => {
-  console.log(props)
+
+  const { userDetails } = props
+
   const initialRestaurantState = {
     id: null,
     name: "",
@@ -17,7 +25,6 @@ const Restaurant = props => {
     RestaurantDataService.get(id)
       .then(response => {
         setRestaurant(response.data);
-        console.log(response.data);
       })
       .catch(e => {
         console.log(e);
@@ -28,9 +35,16 @@ const Restaurant = props => {
     getRestaurant(props.match.params.id);
   }, [props.match.params.id]);
 
+  React.useEffect(() => {
+    console.log("Prism.highlightAll()")
+    Prism.highlightAll()
+  })
+
   const deleteReview = (reviewId, index) => {
-    RestaurantDataService.deleteReview(reviewId, props.user.id)
+    if(window.confirm("Do you really want to delete?")){
+      RestaurantDataService.deleteReview(reviewId, userDetails.user._id)
       .then(response => {
+        console.log(response)
         setRestaurant((prevState) => {
           prevState.reviews.splice(index, 1)
           return({
@@ -41,6 +55,7 @@ const Restaurant = props => {
       .catch(e => {
         console.log(e);
       });
+    }
   };
 
   return (
@@ -60,15 +75,15 @@ const Restaurant = props => {
             {restaurant.reviews.length > 0 ? (
              restaurant.reviews.map((review, index) => {
                return (
-                 <div className="col-lg-4 pb-1" key={index}>
+                 <div className="col-12 pb-1" key={index}>
                    <div className="card">
                      <div className="card-body">
+                        {ReactHtmlParser(review.text)}
                        <p className="card-text">
-                         {review.text}<br/>
                          <strong>User: </strong>{review.name}<br/>
                          <strong>Date: </strong>{review.date}
                        </p>
-                       {props.user && props.user.id === review.user_id &&
+                       {userDetails && userDetails.user._id === review.user_id &&
                           <div className="row">
                             <button onClick={() => deleteReview(review._id, index)} className="btn btn-primary col-lg-5 mx-1 mb-1">Delete</button>
                             <Link to={{
@@ -91,7 +106,6 @@ const Restaurant = props => {
             )}
 
           </div>
-
         </div>
       ) : (
         <div>
