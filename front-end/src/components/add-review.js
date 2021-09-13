@@ -3,6 +3,8 @@ import RestaurantDataService from "../services/restaurant";
 import { Link } from "react-router-dom";
 import { Editor } from '@tinymce/tinymce-react';
 
+require('dotenv').config()
+
 const AddReview = props => {
 
   const editorRef = React.useRef(null);
@@ -77,7 +79,7 @@ const AddReview = props => {
             </div>
             <div className="form-group">
           <Editor 
-            apiKey="0c11zgw76m63mtaljiuo3p5gd7h9vsse7g0gqka0dwh62xcj"
+            apiKey={process.env.REACT_APP_TINYMCE_EDITOR_KEY}
             onInit={(evt, editor) => editorRef.current = editor}
             value={review}
             onEditorChange={(newValue, editor) => setReview(newValue)}
