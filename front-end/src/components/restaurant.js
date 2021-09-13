@@ -3,6 +3,10 @@ import RestaurantDataService from '../services/restaurant.js'
 import {Link} from 'react-router-dom'
 import ReactHtmlParser from 'react-html-parser';
 
+import Prism from "prismjs";
+import "../css/prism.css";
+
+
 
 const Restaurant = props => {
 
@@ -31,8 +35,14 @@ const Restaurant = props => {
     getRestaurant(props.match.params.id);
   }, [props.match.params.id]);
 
+  React.useEffect(() => {
+    console.log("Prism.highlightAll()")
+    Prism.highlightAll()
+  })
+
   const deleteReview = (reviewId, index) => {
-    RestaurantDataService.deleteReview(reviewId, userDetails.user._id)
+    if(window.confirm("Do you really want to delete?")){
+      RestaurantDataService.deleteReview(reviewId, userDetails.user._id)
       .then(response => {
         console.log(response)
         setRestaurant((prevState) => {
@@ -45,6 +55,7 @@ const Restaurant = props => {
       .catch(e => {
         console.log(e);
       });
+    }
   };
 
   return (
@@ -64,10 +75,10 @@ const Restaurant = props => {
             {restaurant.reviews.length > 0 ? (
              restaurant.reviews.map((review, index) => {
                return (
-                 <div className="col-lg-4 pb-1" key={index}>
+                 <div className="col-12 pb-1" key={index}>
                    <div className="card">
                      <div className="card-body">
-                      {ReactHtmlParser(review.text)}<br/>
+                        {ReactHtmlParser(review.text)}
                        <p className="card-text">
                          <strong>User: </strong>{review.name}<br/>
                          <strong>Date: </strong>{review.date}
@@ -95,7 +106,6 @@ const Restaurant = props => {
             )}
 
           </div>
-
         </div>
       ) : (
         <div>

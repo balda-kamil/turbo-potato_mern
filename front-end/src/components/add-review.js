@@ -26,10 +26,6 @@ const AddReview = props => {
   const [review, setReview] = useState(initialReviewState);
   const [submitted, setSubmitted] = useState(false);
 
-  const handleInputChange = content => {
-    setReview(content);
-  };
-
   const saveReview = () => {
     var data = {
       text: review,
@@ -84,9 +80,7 @@ const AddReview = props => {
             apiKey="0c11zgw76m63mtaljiuo3p5gd7h9vsse7g0gqka0dwh62xcj"
             onInit={(evt, editor) => editorRef.current = editor}
             value={review}
-            onEditorChange={handleInputChange}
-            required
-
+            onEditorChange={(newValue, editor) => setReview(newValue)}
             init={{
               height: 500,
               menubar: true,
@@ -101,6 +95,7 @@ const AddReview = props => {
               'removeformat | help | codesample',
               content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
               extended_valid_elements : "script[charset|defer|language|src|type]",
+              codesample_global_prismjs: true,
               codesample_languages: [
                 {text: 'HTML/XML', value: 'markup'},
                 {text: 'JavaScript', value: 'javascript'},
